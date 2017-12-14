@@ -1,0 +1,11 @@
+{
+  "name": "donilla",
+  "version": "1.0.0",
+  "description": "A todo app made with vanilla JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Julio Ojeda",
+  "license": "MIT"
+}
