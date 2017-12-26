@@ -1,0 +1,194 @@
+* {
+  box-sizing: content-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container{
+  width: 80%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/**************************** Header ***************************/
+
+.header{
+  background: rgb(246, 246, 246);
+  padding: 1rem 0;
+  box-shadow: 0px 2px 5px #888888;
+}
+
+.header-container{
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-login div {
+  display: flex;
+  flex-direction: column;
+  min-width: 5rem;
+}
+
+.username {
+  font-size: 1.5rem;
+  margin: auto;
+}
+
+.log_out_btn{
+  background: none;
+  border:none;
+}
+
+.log_out_btn:hover{
+  cursor: pointer;
+  color: rgb(38, 18, 148);
+  font-weight: bold;
+}
+
+
+/**************************** Main ***************************/
+
+.error-container{
+  background: rgb(219, 66, 66);
+  color: rgb(214, 194, 194);
+  padding: .5rem
+}
+
+.main-content{
+  margin: 2rem 0 0 0 ;
+}
+
+.filter{
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter input{
+  font-size: 1.2rem;
+  padding: .5rem;
+  flex-grow: 2;
+}
+
+.filter select{
+  font-size: 1.2rem;
+  flex-grow: 1;
+}
+
+.todos{
+  margin: 2rem 0 0 0;
+}
+
+.todo_item{
+  padding: .5rem 0 .5rem 0;
+  transition: background .5s;
+  position: relative;
+
+}
+
+.todo_item:hover{
+  background: rgb(224, 224, 224);
+}
+
+.todo_item_info{
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo_title_date{
+  padding-left: 1rem;
+  margin: auto 0;
+}
+
+.todo_title{
+  font-size: 1.5rem;
+  font-weight: bold;
+  word-break: break-all;
+}
+
+.todo_date{
+  font-style: italic;
+}
+
+.todo_status{
+  padding-right: 1rem;
+}
+
+.modal{
+  position: absolute;
+  display: flex;
+  flex-flow: row-reverse;
+  /* justify-content: space-between; */
+  background: rgba(22, 22, 22, 0.5);
+  z-index: 1;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+
+}
+
+.modal * {
+  height: 50%;
+  margin: auto 1rem auto 1rem;
+  border: none;
+  background: rgb(224, 224, 224);
+  border: .5px solid black;
+  border-radius: 10px;
+  padding: .5rem;
+}
+
+.modal *:hover{
+  cursor: pointer;
+  color: white;
+  background: rgb(50, 135, 246);
+}
+
+/* .modal-child{
+  display: flex;
+  justify-content: space-between;
+  background: rgba(22, 22, 22, 0.77);
+  height: 100%;
+  width: 100%;
+}
+
+.modal-child *{
+  border: none;
+  background: none;
+  border: .5px solid black;
+  border-radius: 10px;
+
+  margin: 0 2rem ;
+}
+
+ */
+
+.save_todo_form input{
+  font-size: 1.2rem;
+  padding: .5rem;
+  flex-grow: 3;
+}
+
+.save_todo_form button{
+  flex-grow: 1;
+  font-size: 1.2rem;x
+}
+
+.add_todo_btn{
+  margin: 1rem 0 3rem 0;
+  border: .5px solid rgb(183, 184, 173);
+  border-radius: 10px;
+  padding: .5rem;
+  transition: background .5s;
+  font-weight: bold;
+  text-align: center;
+}
+
+.add_todo_btn:hover{
+  cursor: pointer;
+  color: white;
+  background: rgb(50, 135, 246);
+}
