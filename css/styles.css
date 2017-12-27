@@ -30,7 +30,34 @@ body{
 .header-login div {
   display: flex;
   flex-direction: column;
-  min-width: 5rem;
+  min-width: 3rem;
+  /* height: 4rem; */
+}
+
+.log_in{
+  display: flex;
+}
+
+.log_in *{
+  flex-grow: 1;
+  font-size: 1rem;
+  padding: .3rem;
+}
+
+.log_in_btn{
+  border: .5px solid rgb(183, 184, 173);
+  transition: background .5s;
+  font-weight: bold;
+  text-align: center;
+  background: none;
+
+}
+
+
+.log_in_btn:hover{
+  cursor: pointer;
+  color: white;
+  background: rgb(50, 135, 246);
 }
 
 .username {
