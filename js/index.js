@@ -6,7 +6,7 @@ var state = {
   is_inserting_todo: false,
   is_editing_todo: false,
   todo_selected_id: '',
-  todos: [],
+  todos: fetchTodos(),
   text_filter: '',
   status_filter: 'all'
 };
@@ -62,22 +62,19 @@ function renderTodoList(){
       todos.map(function(todo) {
         id = `<span style="display:none;">${todo.id}</span>`
         title = `<div class="todo_title">${todo.title}</div>`;
-        // createdBy = `<div>${todo.createdBy}</div>`;
         createdAt = `<div class="todo_date">${todo.createdAt}</div>`;
         finished = `<img class="todo_status" width"50" height="50" src="../img/${todo.finished ? 'done.png':'pending.png'}"/>`;
-        remove = '<button onclick="remove_todo_hanlder(event)">Remove</button>';
-        update = `<button onclick="${todo.finished ? 'mark_undone_todo_handler(event)':'mark_done_todo_handler(event)'}" >Mark ${todo.finished ? 'undone':'done'}</button>`;
-        cancel = '<button onclick="cancel_edit_hanlder(event)" >Cancel</button>';
+        remove = '<button class="todo_btn remove" onclick="remove_todo_hanlder(event)">Remove</button>';
+        update = `<button class="todo_btn update" onclick="${todo.finished ? 'mark_undone_todo_handler(event)':'mark_done_todo_handler(event)'}" >Mark ${todo.finished ? 'undone':'done'}</button>`;
 
         title_createdBy = `<div class="todo_title_date">${title + createdAt}</div>`;
-        todo_controls = `<div id="modal" class="modal"> ${remove + update + cancel }</div>`;
+        todo_controls = `<div id="modal" class="modal"> ${remove + update}</div>`;
 
-        todo_elements += `<div class="todo_item" id="todo_item" onclick = "edit_todo_handler(this)" > <div class="todo_item_info"> ${id + title_createdBy +finished}</div> <div class="todo_item_controls" style="display:none;"> ${todo_controls} </div> </div>`;
+        todo_elements += `<div tabindex="0" class="todo_item" id="todo_item" onclick = "edit_todo_handler(this)" onmouseleave=cancel_edit_hanlder(this) > <div class="todo_item_info"> ${id + title_createdBy +finished}</div> <div class="todo_item_controls" style="display:none;"> ${todo_controls} </div> </div>`;
 
       });
       todo_list__dom.innerHTML = todo_elements;
 
-      state.error_message = '';
     }else{
       state.error_message = 'Empty list, please add a new todo';
       todo_list__dom.innerHTML = '';
@@ -97,8 +94,9 @@ function renderErrorMessage(){
     error_message__dom.innerHTML = state.error_message;
   }else{
     error_container__dom.style.display = 'none';
-    //error_message__dom.innerHTML = error_message;
   }
+
+  state.error_message = '';
 }
 
 function renderAddTodo(){
@@ -120,90 +118,68 @@ function render(){
   renderAddTodo();
 }
 
-fillTodoArray(10);
-render();
+// ----------------------EVEN HANDLERS----------------------
 
-// ----------------------EVEN LISTENERS----------------------
+function add_todo_handler(e){
+  state.is_inserting_todo = true;
+  render();
+}
 
-document.addEventListener('click', function(e) {
+function log_in_handler(e){
+  var username = document.querySelector('[name=username_input]').value.trim();
 
-  switch (e.target.id) {
-
-    case 'log_in_btn':
-
-      var username = document.querySelector('[name=username_input]').value.trim();
-
-      if(validInput(username)){
-        window.localStorage.setItem('username', username);
-        state.username = username;
-        render();
-      }else{
-        state.error_message = 'The user is invalid, please try again.'
-
-      }
-    break;
-
-    case 'log_out_btn':
-
-      window.localStorage.clear();
-      state.username = '';
-
-      render();
-
-    break;
-
-    case 'add_todo_btn':
-      state.is_inserting_todo = true;
-      render();
-    break;
-
-    default:
+  if(validInput(username)){
+    window.localStorage.setItem('username', username);
+    state.username = username;
+    render();
+  }else{
+    state.error_message = 'The user is invalid, please try again.'
 
   }
+}
 
+function log_out_handler(e){
+  window.localStorage.clear();
+  state.username = '';
 
+  render();
+}
 
-});
-
-document.addEventListener('submit', function(e) {
-  switch (e.target.id) {
-    case 'save_todo_form':
-        var todo_title = document.querySelector('[name="todo_title"]').value.trim();
-
-
-        if(validInput(todo_title)){
-          state.todos.push({
-            id: getUniqueID(),
-            title: todo_title,
-            createdBy: state.username,
-            createdAt: getTime(),
-            finished: false
-          });
-          state.is_inserting_todo = false;
-          document.querySelector('[name="todo_title"]').value = '';
-
-          render();
-        }
-
-    break;
-  }
-
-  e.preventDefault();
-});
-
-document.querySelector('[name="text_filter_input"]').addEventListener('input', function() {
-  var text_filter = document.querySelector('[name="text_filter_input"]').value;
-  state.text_filter = text_filter.toLowerCase();
-  renderTodoList();
-});
-
-document.getElementById('status_filter_select').addEventListener('change', function(){
+function status_filter_handler(e){
   var status_filter = document.getElementById('status_filter_select').value;
   state.status_filter = status_filter;
   renderTodoList();
-});
+}
 
-// Dynamic elements
+function save_todo_handler(e){
+  var todo_title = document.querySelector('[name="todo_title"]').value.trim();
+
+  if(validInput(todo_title)){
+    state.todos.push({
+      id: getUniqueID(),
+      title: todo_title,
+      createdBy: state.username,
+      createdAt: getTime(),
+      finished: false
+    });
+    state.is_inserting_todo = false;
+    document.querySelector('[name="todo_title"]').value = '';
+
+    saveTodos(state.todos);
+
+  }else{
+    state.error_message = 'You must type something';
+  }
+  render();
+
+  e.preventDefault();
+}
+
+function text_filter_handler(e){
+  var text_filter = document.querySelector('[name="text_filter_input"]').value;
+  state.text_filter = text_filter.toLowerCase();
+  renderTodoList();
+}
 
 function edit_todo_handler(element){
   if(!state.is_editing_todo){
@@ -217,7 +193,8 @@ function remove_todo_hanlder(e){
   state.todos = removeTodoByID(state.todos, state.todo_selected_id);
   state.is_editing_todo = false;
   state.todo_selected_id = '';
-  renderTodoList();
+  saveTodos(state.todos);
+  render();
   e.stopPropagation();
 
 }
@@ -226,6 +203,7 @@ function mark_done_todo_handler(e){
   state.todos = changeTodoStateByID(state.todos, state.todo_selected_id, true);
   state.is_editing_todo = false;
   state.todo_selected_id = '';
+  saveTodos(state.todos);
   renderTodoList();
   e.stopPropagation();
 }
@@ -234,15 +212,21 @@ function mark_undone_todo_handler(e){
   state.todos = changeTodoStateByID(state.todos, state.todo_selected_id, false);
   state.is_editing_todo = false;
   state.todo_selected_id = '';
+  saveTodos(state.todos);
   renderTodoList();
   e.stopPropagation();
 }
 
 function cancel_edit_hanlder(e){
-  state.is_editing_todo = false;
-  state.todo_selected_id = '';
-  renderTodoList();
-  e.stopPropagation();
+
+  setTimeout(function(){
+    if(document.activeElement == e){
+      state.is_editing_todo = false;
+      state.todo_selected_id = '';
+      renderTodoList();
+    }
+  },0)
+
 }
 
 
@@ -316,3 +300,20 @@ function fillTodoArray(limit){
   }
   renderTodoList();
 }
+
+function saveTodos(todos){
+  window.localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+function fetchTodos(){
+  var todos = window.localStorage.getItem('todos')
+  if (todos)
+    return JSON.parse(todos);
+  else
+    return []
+}
+
+
+// ---------------------- MAIN ----------------------
+
+render();
