@@ -17,6 +17,7 @@ var DOM__todo_list = document.getElementById('todo_list');
 var DOM__error_message = document.getElementById('error_message');
 var DOM__error_container = document.getElementById('error-container');
 var DOM__todos_main = document.getElementById('todos_main');
+var DOM__cover = document.getElementById('cover');
 var DOM__add_todo_btn = document.getElementById('add_todo_btn');
 var DOM__save_todo_form = document.getElementById('save_todo_form');
 var DOM__log_in = document.getElementById('log_in');
@@ -47,6 +48,7 @@ function renderUserInfo(){
 function renderTodoList(){
 
   DOM__todos_main.style.display = 'block';
+  DOM__cover.style.display = 'none';
 
   var todos = state.todos;
 
@@ -68,6 +70,7 @@ function renderTodoList(){
     }
   }else{
     DOM__todos_main.style.display = 'none';
+    DOM__cover.style.display = 'flex';
   }
 
 
