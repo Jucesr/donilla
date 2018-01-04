@@ -1,7 +1,7 @@
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
-const publicPath = '../public/';
+const publicPath = `${__dirname}/../public/`;
 const port = 3000;
 
 http.createServer(function(req, res) {
