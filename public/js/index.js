@@ -312,7 +312,7 @@ function createTodoItems(todos){
     id = `<span style="display:none;">${todo.id}</span>`;
     title = `<div class="todo_title">${todo.title}</div>`;
     createdAt = `<div class="todo_date">${todo.createdAt}</div>`;
-    status = `<img class="todo_status" width="50" height="50" src="../img/${todo.status ? 'done.png':'pending.png'}"/>`;
+    status = `<img class="todo_status" height="50" src="../img/${todo.status ? 'done.png':'pending.png'}"/>`;
     remove = '<button class="todo_btn remove" onclick="remove_todo_hanlder(event)">Remove</button>';
     update = `<button class="todo_btn update" onclick="${todo.status ? 'mark_pending_todo_handler(event)':'mark_done_todo_handler(event)'}" >Mark ${todo.status ? 'pending':'done'}</button>`;
 
